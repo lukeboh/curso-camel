@@ -10,6 +10,7 @@ public class RotaRedmine {
 	public static void main(String[] args) throws Exception {
 
 		CamelContext context = new DefaultCamelContext();
+		context.setTracing(true);
 		context.addRoutes(new RouteBuilder() {
 			@Override
 			public void configure() throws Exception {
@@ -29,6 +30,6 @@ public class RotaRedmine {
 		});
 
 		context.start(); // aqui camel realmente começa a trabalhar
-		Thread.sleep(10000); // esperando um pouco para dar um tempo para camel
+		Thread.sleep(20000); // esperando um pouco para dar um tempo para camel
 	}
 }
