@@ -13,9 +13,18 @@ public class RotaRedmine {
 		context.addRoutes(new RouteBuilder() {
 			@Override
 			public void configure() throws Exception {
-				from("timer://negociacoes?fixedRate=true&delay=1s&period=360s")
-						.to("http4://www.redmine.org/projects.xml").convertBodyTo(String.class).log("${body}")
-						.setHeader(Exchange.FILE_NAME, constant("projects.xml")).to("file:saida");
+				/* inicia com timer */
+				from("timer://negociacoes?fixedRate=true&delay=1s&period=360s").
+				/* lendo do servidor */
+				to("http4://www.redmine.org/projects.xml").
+				/* converte */
+				convertBodyTo(String.class).
+				/* loga o que foi lido */
+				log("Algo - ${body}").
+				/* Muda o nome */
+				setHeader(Exchange.FILE_NAME, constant("projects.xml")).
+				/* finaliza */
+				to("file:saida");
 			}
 		});
 
