@@ -8,6 +8,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 public class RotaRedmine {
 
 	public static void main(String[] args) throws Exception {
+		String password = args[0];
 
 		CamelContext context = new DefaultCamelContext();
 		context.setTracing(true);
@@ -15,15 +16,15 @@ public class RotaRedmine {
 			@Override
 			public void configure() throws Exception {
 				/* inicia com timer */
-				from("timer://negociacoes?fixedRate=true&delay=1s&period=360s").
+				from("timer://timer-qualquer?fixedRate=true&delay=1s&period=360s").
 				/* lendo do servidor */
-				to("http4://www.redmine.org/projects.xml").
+				to("http4://redmine.tse.jus.br/projects/mrc/issues.xml?authUsername=luciano.bohnert&authPassword=" + password).
 				/* converte */
 				convertBodyTo(String.class).
 				/* loga o que foi lido */
-				log("Algo - ${body}").
+				log("${body}").
 				/* Muda o nome */
-				setHeader(Exchange.FILE_NAME, constant("projects.xml")).
+				setHeader(Exchange.FILE_NAME, constant("issues.xml")).
 				/* finaliza */
 				to("file:saida");
 			}
