@@ -11,14 +11,15 @@ public class RotaRedmine {
 		String password = args[0];
 
 		CamelContext context = new DefaultCamelContext();
-		context.setTracing(true);
 		context.addRoutes(new RouteBuilder() {
 			@Override
 			public void configure() throws Exception {
 				/* inicia com timer */
-				from("timer://timer-qualquer?fixedRate=true&delay=1s&period=360s").
+				from("timer://timer-qualquer?fixedRate=true&delay=1s&period=360s").id("from-timer").
+				/* dar nome a rota */
+				routeId("Salvar-issues").
 				/* lendo do servidor */
-				to("http4://redmine.tse.jus.br/projects/mrc/issues.xml?authUsername=luciano.bohnert&authPassword=" + password).
+				to("http4://redmine.tse.jus.br/projects/mrc/issues.xml?authUsername=luciano.bohnert&authPassword=" + password).id("to-redmine").
 				/* converte */
 				convertBodyTo(String.class).
 				/* loga o que foi lido */

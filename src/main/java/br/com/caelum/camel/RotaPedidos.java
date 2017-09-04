@@ -17,6 +17,8 @@ public class RotaPedidos {
 				 * os arquivos
 				 */
 				from("file:pedidos?delay=5s&noop=true").
+				/* Dar nome à Rota */
+				routeId("Copia-Arquivos").
 				/* Quebrar xml por item */
 				split().xpath("/pedido/itens/item").
 				/*
